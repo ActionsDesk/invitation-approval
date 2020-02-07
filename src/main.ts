@@ -30,13 +30,19 @@ async function run(): Promise<void> {
       const emailRegex: string = core.getInput("EMAIL_REGEX");
       const userRole: string = core.getInput("USER_ROLE") || "direct_member";
 
+      core.debug(`Checking if the body contains approve: ${comment.body}`);
       if (comment.body.contains("approve")) {
+        core.debug(
+          `Checking if the approvers are good: ${comment.user.login}: ${approvers}`
+        );
         if (approvers.split(",").includes(comment.user.login)) {
           // read issue body
           const issue = payload.issue;
 
           // parse email
           const email = getEmail(issue.body, emailRegex);
+
+          core.debug(`The email ${email}`);
 
           // invite email
           try {
