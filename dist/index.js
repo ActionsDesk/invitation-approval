@@ -504,6 +504,9 @@ function run() {
                     return;
                 }
             }
+            else {
+                core.debug("you dont have a token");
+            }
         }
         catch (error) {
             core.setFailed(error.message);
