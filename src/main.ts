@@ -31,7 +31,7 @@ async function run(): Promise<void> {
       const userRole: string = core.getInput("USER_ROLE") || "direct_member";
 
       core.debug(`Checking if the body contains approve: ${comment.body}`);
-      if (comment.body.contains("approve")) {
+      if (comment.body.indexOf("approve") != -1) {
         core.debug(
           `Checking if the approvers are good: ${comment.user.login}: ${approvers}`
         );

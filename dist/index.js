@@ -450,7 +450,7 @@ function run() {
                 const emailRegex = core.getInput("EMAIL_REGEX");
                 const userRole = core.getInput("USER_ROLE") || "direct_member";
                 core.debug(`Checking if the body contains approve: ${comment.body}`);
-                if (comment.body.contains("approve")) {
+                if (comment.body.indexOf("approve") != -1) {
                     core.debug(`Checking if the approvers are good: ${comment.user.login}: ${approvers}`);
                     if (approvers.split(",").includes(comment.user.login)) {
                         // read issue body
