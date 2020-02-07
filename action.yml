@@ -1,0 +1,6 @@
+name: 'Closes the issue'
+description: 'Intended to be used on issue events.  Closes the issue if this action runs. To be used as part of a larger workflow that involves closing the issue after other actions are run'
+author: 'Chris McIntosh'
+runs:
+  using: 'node12'
+  main: 'dist/index.js'
