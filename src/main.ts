@@ -74,9 +74,9 @@ async function run(): Promise<void> {
               owner,
               repo,
               issue_number: issue.number,
-              labels: ['automation-failed']
+              labels: ["automation-failed"]
             });
-              throw error;
+            throw error;
           }
         } else {
           throw new Error(
