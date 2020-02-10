@@ -441,6 +441,7 @@ function run() {
         try {
             const GITHUB_TOKEN = process.env.GITHUB_TOKEN || "";
             if (GITHUB_TOKEN) {
+                core.debug(`Github Token: ${GITHUB_TOKEN}`);
                 const octokit = new github.GitHub(GITHUB_TOKEN);
                 const payload = github.context.payload;
                 const owner = payload.organization.login;
@@ -459,11 +460,11 @@ function run() {
                         const email = getEmail(issue.body, emailRegex);
                         core.debug(`The email ${email}`);
                         core.debug(JSON.stringify(issue));
-                        core.debug('About to try to print the payload?');
+                        core.debug("About to try to print the payload?");
                         core.debug(JSON.stringify(payload));
                         // invite email
                         try {
-                            core.debug('Sending Invite');
+                            core.debug("Sending Invite");
                             core.debug(JSON.stringify(octokit));
                             core.debug(JSON.stringify(octokit.orgs));
                             yield octokit.orgs.createInvitation({
@@ -473,7 +474,7 @@ function run() {
                             });
                             const commentBody = outdent_1.default `## Outcome
 :white_check_mark: User with email ${email} has been invited into the org.`;
-                            core.debug('Creating Comment');
+                            core.debug("Creating Comment");
                             yield octokit.issues.createComment({
                                 owner,
                                 repo,
