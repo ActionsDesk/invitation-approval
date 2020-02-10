@@ -19,11 +19,13 @@ function getEmail(issueBody: string, regexString: string): string {
 async function run(): Promise<void> {
   try {
     const GITHUB_TOKEN: string = process.env.GITHUB_TOKEN || "";
-    const repository: string = process.env.GITHUB_REPOSITORY;
     if (GITHUB_TOKEN) {
-      const octokit: github.GitHub = new github.GitHub(GITHUB_TOKEN);
+      core.debug(`Github Token: ${GITHUB_TOKEN}`);
+      const octokit = new github.GitHub(GITHUB_TOKEN);
+      core.debug(`${JSON.stringify(octokit)}`);
       const payload: WebhookPayload = github.context.payload;
-      const [owner, repo] = repository.split("/");
+      const owner = payload.organization.login;
+      const repo = payload.repository.name;
       const { comment } = payload;
 
       const approvers: string = core.getInput("approvers");
@@ -31,7 +33,7 @@ async function run(): Promise<void> {
       const userRole: string = core.getInput("USER_ROLE") || "direct_member";
 
       core.debug(`Checking if the body contains approve: ${comment.body}`);
-      if (comment.body.indexOf("approve") != -1) {
+      if (comment.body.toLowerCase().indexOf("approve") != -1) {
         core.debug(
           `Checking if the approvers are good: ${comment.user.login}: ${approvers}`
         );
@@ -42,14 +44,9 @@ async function run(): Promise<void> {
           // parse email
           const email = getEmail(issue.body, emailRegex);
 
-            core.debug(`The email ${email}`);
-            core.debug(JSON.stringify(issue));
-            core.debu('About to try to print the payload?')
-            core.debug(JSON.stringify(payload));
-
           // invite email
-            try {
-                core.debug('Sending Invite')
+          try {
+            core.debug("Sending Invite");
             await octokit.orgs.createInvitation({
               org: owner,
               role: userRole as any,
@@ -59,7 +56,6 @@ async function run(): Promise<void> {
             const commentBody: string = outdent`## Outcome
 :white_check_mark: User with email ${email} has been invited into the org.`;
 
-                core.debug('Creating Comment')
             await octokit.issues.createComment({
               owner,
               repo,
