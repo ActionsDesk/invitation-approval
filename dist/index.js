@@ -459,8 +459,11 @@ function run() {
                         const email = getEmail(issue.body, emailRegex);
                         core.debug(`The email ${email}`);
                         core.debug(JSON.stringify(issue));
+                        core.debug('About to try to print the payload?');
+                        core.debug(JSON.stringify(payload));
                         // invite email
                         try {
+                            core.debug('Sending Invite');
                             yield octokit.orgs.createInvitation({
                                 org: owner,
                                 role: userRole,
@@ -468,6 +471,7 @@ function run() {
                             });
                             const commentBody = outdent_1.default `## Outcome
 :white_check_mark: User with email ${email} has been invited into the org.`;
+                            core.debug('Creating Comment');
                             yield octokit.issues.createComment({
                                 owner,
                                 repo,
