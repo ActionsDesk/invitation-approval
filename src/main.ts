@@ -42,10 +42,14 @@ async function run(): Promise<void> {
           // parse email
           const email = getEmail(issue.body, emailRegex);
 
-          core.debug(`The email ${email}`);
-          core.debug(JSON.stringify(issue));
+            core.debug(`The email ${email}`);
+            core.debug(JSON.stringify(issue));
+            core.debu('About to try to print the payload?')
+            core.debug(JSON.stringify(payload));
+
           // invite email
-          try {
+            try {
+                core.debug('Sending Invite')
             await octokit.orgs.createInvitation({
               org: owner,
               role: userRole as any,
@@ -55,6 +59,7 @@ async function run(): Promise<void> {
             const commentBody: string = outdent`## Outcome
 :white_check_mark: User with email ${email} has been invited into the org.`;
 
+                core.debug('Creating Comment')
             await octokit.issues.createComment({
               owner,
               repo,
