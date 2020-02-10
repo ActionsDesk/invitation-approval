@@ -19,10 +19,10 @@ function getEmail(issueBody: string, regexString: string): string {
 async function run(): Promise<void> {
   try {
     const GITHUB_TOKEN: string = process.env.GITHUB_TOKEN || "";
-      if (GITHUB_TOKEN) {
-          core.debug(`Github Token: ${GITHUB_TOKEN}`);
-          const octokit = new github.GitHub(GITHUB_TOKEN);
-          core.debug(`${JSON.stringify(octokit)}`)
+    if (GITHUB_TOKEN) {
+      core.debug(`Github Token: ${GITHUB_TOKEN}`);
+      const octokit = new github.GitHub(GITHUB_TOKEN);
+      core.debug(`${JSON.stringify(octokit)}`);
       const payload: WebhookPayload = github.context.payload;
       const owner = payload.organization.login;
       const repo = payload.repository.name;
@@ -33,7 +33,7 @@ async function run(): Promise<void> {
       const userRole: string = core.getInput("USER_ROLE") || "direct_member";
 
       core.debug(`Checking if the body contains approve: ${comment.body}`);
-          if (comment.body.toLowerCase().indexOf("approve") != -1) {
+      if (comment.body.toLowerCase().indexOf("approve") != -1) {
         core.debug(
           `Checking if the approvers are good: ${comment.user.login}: ${approvers}`
         );
