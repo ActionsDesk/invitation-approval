@@ -458,6 +458,7 @@ function run() {
                         // parse email
                         const email = getEmail(issue.body, emailRegex);
                         core.debug(`The email ${email}`);
+                        core.debug(JSON.stringify(issue));
                         // invite email
                         try {
                             yield octokit.orgs.createInvitation({
