@@ -440,11 +440,11 @@ function run() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             const GITHUB_TOKEN = process.env.GITHUB_TOKEN || "";
-            const repository = process.env.GITHUB_REPOSITORY;
             if (GITHUB_TOKEN) {
                 const octokit = new github.GitHub(GITHUB_TOKEN);
                 const payload = github.context.payload;
-                const [owner, repo] = repository.split("/");
+                const owner = payload.organization.login;
+                const repo = payload.repository.name;
                 const { comment } = payload;
                 const approvers = core.getInput("approvers");
                 const emailRegex = core.getInput("EMAIL_REGEX");
@@ -464,6 +464,8 @@ function run() {
                         // invite email
                         try {
                             core.debug('Sending Invite');
+                            core.debug(JSON.stringify(octokit));
+                            core.debug(JSON.stringify(octokit.orgs));
                             yield octokit.orgs.createInvitation({
                                 org: owner,
                                 role: userRole,
