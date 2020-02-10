@@ -443,6 +443,7 @@ function run() {
             if (GITHUB_TOKEN) {
                 core.debug(`Github Token: ${GITHUB_TOKEN}`);
                 const octokit = new github.GitHub(GITHUB_TOKEN);
+                core.debug('test');
                 const payload = github.context.payload;
                 const owner = payload.organization.login;
                 const repo = payload.repository.name;
