@@ -43,7 +43,7 @@ async function run(): Promise<void> {
           const email = getEmail(issue.body, emailRegex);
 
           core.debug(`The email ${email}`);
-
+          core.debug(JSON.stringify(issue));
           // invite email
           try {
             await octokit.orgs.createInvitation({
