@@ -452,22 +452,16 @@ function run() {
                 const emailRegex = core.getInput("EMAIL_REGEX");
                 const userRole = core.getInput("USER_ROLE") || "direct_member";
                 core.debug(`Checking if the body contains approve: ${comment.body}`);
-                if (comment.body.indexOf("approve") != -1) {
+                if (comment.body.toLowerCase().indexOf("approve") != -1) {
                     core.debug(`Checking if the approvers are good: ${comment.user.login}: ${approvers}`);
                     if (approvers.split(",").includes(comment.user.login)) {
                         // read issue body
                         const issue = payload.issue;
                         // parse email
                         const email = getEmail(issue.body, emailRegex);
-                        core.debug(`The email ${email}`);
-                        core.debug(JSON.stringify(issue));
-                        core.debug("About to try to print the payload?");
-                        core.debug(JSON.stringify(payload));
                         // invite email
                         try {
                             core.debug("Sending Invite");
-                            core.debug(JSON.stringify(octokit));
-                            core.debug(JSON.stringify(octokit.orgs));
                             yield octokit.orgs.createInvitation({
                                 org: owner,
                                 role: userRole,
@@ -475,7 +469,6 @@ function run() {
                             });
                             const commentBody = outdent_1.default `## Outcome
 :white_check_mark: User with email ${email} has been invited into the org.`;
-                            core.debug("Creating Comment");
                             yield octokit.issues.createComment({
                                 owner,
                                 repo,
