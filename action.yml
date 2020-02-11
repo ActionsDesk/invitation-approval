@@ -1,0 +1,6 @@
+name: 'Invitation Approval'
+description: 'Used in conjunction with other actions to notice issues that need approval before they can be actioned and request that approval'
+author: 'Chris McIntosh'
+runs:
+  using: 'node12'
+  main: 'dist/index.js'
